@@ -32,11 +32,24 @@ def find_duplicate_files(target_dir)
   hashes.select { |_hash, paths| paths.size > 1 }
 end
 
-file_path = File.join(__dir__, "safe_test.txt")
-safe_write(file_path, "System configuration payload")
+puts "БЛОК 3. РОБОТА З ФАЙЛАМИ"
 
+puts "\n Завдання 6. Атомарний безпечний запис файлу (safe_write) "
+file_path = File.join(__dir__, "safe_test.txt")
+content = "Тестові конфігураційні дані для атомарного запису."
+safe_write(file_path, content)
+puts "Файл записано за шляхом: #{file_path}"
+puts "Перевірка зчитаного вмісту: #{File.read(file_path).inspect}"
+
+puts "\n Завдання 7. Пошук однакових файлів за SHA-256 "
+puts "Сканування директорії: #{__dir__}"
 duplicates = find_duplicate_files(__dir__)
-duplicates.each do |hash, files|
-  puts hash
-  files.each { |f| puts "  #{f}" }
+
+if duplicates.empty?
+  puts "Дублікатів файлів не виявлено."
+else
+  duplicates.each do |hash, files|
+    puts "Хеш SHA-256: #{hash}"
+    files.each { |f| puts "  -> #{f}" }
+  end
 end
