@@ -1,13 +1,26 @@
 puts " Завдання 1: Переведення літрів у метри кубічні "
 
-def liters_to_cubic_meters(liters)
-  liters.to_f / 1000.0
+LITERS_IN_CUBIC_METER = 1000.0
+CUBIC_METERS_PER_LITER = 0.001
+
+def liters_to_m3_div(liters)
+  liters.to_f / LITERS_IN_CUBIC_METER
+end
+
+def liters_to_m3_mul(liters)
+  liters.to_f * CUBIC_METERS_PER_LITER
 end
 
 test_liters = [500, 1000, 2500, 120]
+
+puts "Спосіб 1 (ділення на константу):"
 test_liters.each do |liters|
-  m3 = liters_to_cubic_meters(liters)
-  puts "#{liters} л = #{m3} м³"
+  puts "#{liters} л = #{liters_to_m3_div(liters)} м³"
+end
+
+puts "\nСпосіб 2 (множення на зворотний коефіцієнт):"
+test_liters.each do |liters|
+  puts "#{liters} л = #{liters_to_m3_mul(liters)} м³"
 end
 
 puts " "
@@ -22,14 +35,22 @@ strings = [
   "Один два три"
 ]
 
-result_strings = strings.select do |str|
+puts "Початковий список рядків:"
+puts strings.map { |s| "  - \"#{s}\"" }
+
+result_way1 = strings.select do |str|
   str.strip.split(/\s+/).size > 2
 end
 
-puts "Початковий список рядків:"
-puts strings.map { |s| "  - \"#{s}\"" }
-puts "\nРядки, що містять більше ніж 2 слова:"
-puts result_strings.map { |s| "  -> \"#{s}\"" }
+result_way2 = strings.reject do |str|
+  str.strip.split(/\s+/).size <= 2
+end
+
+puts "\nСпосіб 1 (select):"
+puts result_way1.map { |s| "  -> \"#{s}\"" }
+
+puts "\nСпосіб 2 (reject):"
+puts result_way2.map { |s| "  -> \"#{s}\"" }
 
 puts " "
 puts " Завдання 3: Зсув елементів масиву вліво на 1 позицію "
@@ -37,16 +58,13 @@ puts " Завдання 3: Зсув елементів масиву вліво �
 original_array = [10, 20, 30, 40, 50]
 puts "Оригінальний масив: #{original_array.inspect}"
 
-shifted_method1 = original_array.rotate(1)
-puts "Спосіб 1 (rotate(1)):       #{shifted_method1.inspect}"
-
-shifted_method2_slice = original_array[1..] + [original_array[0]]
-puts "Спосіб 2 (через зрізи):     #{shifted_method2_slice.inspect}"
+shifted_way1 = original_array.rotate(1)
+puts "Спосіб 1 (rotate(1)):    #{shifted_way1.inspect}"
 
 arr_copy = original_array.dup
-first_element = arr_copy.shift 
-arr_copy.push(first_element)
-puts "Спосіб 2 (shift + push):    #{arr_copy.inspect}"
+first_elem = arr_copy.shift
+arr_copy.push(first_elem)
+puts "Спосіб 2 (shift + push): #{arr_copy.inspect}"
 
 puts " "
 puts " Завдання 4: Формування списку для закупівлі товарів "
@@ -59,19 +77,34 @@ warehouse = [
   { title: "Навушники", quantity: 2, min_quantity: 6 }
 ]
 
-to_order = warehouse
+to_order_1 = warehouse
   .select { |item| item[:quantity] < item[:min_quantity] }
   .map do |item|
-    needed = item[:min_quantity] - item[:quantity]
     {
       title: item[:title],
       current: item[:quantity],
       min_needed: item[:min_quantity],
-      to_buy: needed
+      to_buy: item[:min_quantity] - item[:quantity]
     }
   end
 
-puts "Товари, які потребують замовлення на склад:"
-to_order.each_with_index do |item, idx|
-  puts "#{idx + 1}. #{item[:title]} — у наявності: #{item[:current]} шт., мінімум: #{item[:min_needed]} шт. (Докупити: #{item[:to_buy]} шт.)"
+to_order_2 = warehouse.each_with_object([]) do |item, list|
+  if item[:quantity] < item[:min_quantity]
+    list << {
+      title: item[:title],
+      current: item[:quantity],
+      min_needed: item[:min_quantity],
+      to_buy: item[:min_quantity] - item[:quantity]
+    }
+  end
+end
+
+puts "Спосіб 1 (select + map):"
+to_order_1.each_with_index do |item, idx|
+  puts "#{idx + 1}. #{item[:title]} — Докупити: #{item[:to_buy]} шт."
+end
+
+puts "\nСпосіб 2 (each_with_object):"
+to_order_2.each_with_index do |item, idx|
+  puts "#{idx + 1}. #{item[:title]} — Докупити: #{item[:to_buy]} шт."
 end
