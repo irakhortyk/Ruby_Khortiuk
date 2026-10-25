@@ -45,7 +45,14 @@ mat = [
   [5, -9, 2]
 ]
 
-puts matrix_min_loop(mat)
-puts matrix_min_iterator(mat)
-puts product_positive_loop(mat)
-puts product_positive_iterator(mat)
+puts "БЛОК 2. ДВОВИМІРНІ МАСИВИ"
+puts "Вхідна матриця:"
+mat.each { |row| puts "  #{row.inspect}" }
+
+puts "\n Завдання 8. Знайти мінімум у двовимірному масиві "
+puts "Спосіб 1 (оператор циклу for): #{matrix_min_loop(mat)}"
+puts "Спосіб 2 (ітератор): #{matrix_min_iterator(mat)}"
+
+puts "\n Завдання 9. Знайти добуток додатних елементів двовимірного масиву "
+puts "Спосіб 1 (оператор циклу while): #{product_positive_loop(mat)}"
+puts "Спосіб 2 (ітератор): #{product_positive_iterator(mat)}"
