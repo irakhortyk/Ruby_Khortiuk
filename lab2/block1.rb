@@ -37,10 +37,16 @@ def max_indices_iterators(arr)
   arr.each_with_index.filter_map { |val, idx| idx if val == max_val }
 end
 
-numbers1 = [12, -7, 5, -3, 0, -18, 9]
-puts sum_negative_control(numbers1)
-puts sum_negative_iterators(numbers1)
+puts "БЛОК 1. ОДНОВИМІРНІ МАСИВИ"
 
+puts "\n Завдання 2. Знайти суму від'ємних елементів масиву"
+numbers1 = [12, -7, 5, -3, 0, -18, 9]
+puts "Вхідний масив: #{numbers1.inspect}"
+puts "Спосіб 1 (керуючі конструкції): #{sum_negative_control(numbers1)}"
+puts "Спосіб 2 (ітератор): #{sum_negative_iterators(numbers1)}"
+
+puts "\n Завдання 3. Знайти усі індекси максимального елемента масиву"
 numbers2 = [4, 9, 2, 9, 1, 9, 5]
-p max_indices_control(numbers2)
-p max_indices_iterators(numbers2)
+puts "Вхідний масив: #{numbers2.inspect}"
+puts "Спосіб 1 (керуючі конструкції): #{max_indices_control(numbers2).inspect}"
+puts "Спосіб 2 (ітератор): #{max_indices_iterators(numbers2).inspect}"
